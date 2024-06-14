@@ -4,7 +4,6 @@ function whole($number)
     return is_numeric($number) && (int)$number == $number;
 }
 
-
 $cars = [
     [
         'Size' => 'S',
@@ -23,12 +22,12 @@ $cars = [
     ]
 ];
 
-
 $seat = (int)readline('Please input number (seat): ');
 
 
 $lowestTotal = PHP_INT_MAX;
-$lowestCars = [];
+$lowestCar = null;
+$lowestResult = null;
 
 if ($seat > 0) {
     foreach ($cars as $car) {
@@ -37,30 +36,15 @@ if ($seat > 0) {
         $cost = $car['Cost'];
         $total = $cost * $result;
 
-
-        if (whole($result)) {
-
-            if ($total < $lowestTotal) {
-                $lowestTotal = $total;
-                $lowestCars = [[
-                    'Size' => $car['Size'],
-                    'Result' => $result,
-                    'Total' => $total
-                ]];
-            } elseif ($total == $lowestTotal) {
-                $lowestCars[] = [
-                    'Size' => $car['Size'],
-                    'Result' => $result,
-                    'Total' => $total
-                ];
-            }
+        if (whole($result) && $total < $lowestTotal) {
+            $lowestTotal = $total;
+            $lowestCar = $car;
+            $lowestResult = $result;
         }
     }
 
-    if (!empty($lowestCars)) {
-        foreach ($lowestCars as $lowestCar) {
-            echo $lowestCar['Size'] . " x " . $lowestCar['Result'] . "\n" . 'Total = PHP ' . $lowestCar['Total'] . "\n";
-        }
+    if ($lowestCar !== null) {
+        echo $lowestCar['Size'] . " x " . $lowestResult . "\n" . 'Total = PHP ' . $lowestTotal . "\n";
     } else {
         echo "No valid car configuration found.\n";
     }
